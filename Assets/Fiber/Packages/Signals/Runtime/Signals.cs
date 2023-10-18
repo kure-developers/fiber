@@ -169,6 +169,8 @@ namespace Signals
     [Serializable]
     public class Signal<T> : BaseSignal<T>
     {
+        private event Action<T> _onValueChanged;
+    
         [SerializeField]
         private T _value;
         public T Value
@@ -176,8 +178,13 @@ namespace Signals
             get => _value;
             set
             {
+                bool modified = !_value.Equals(value);
+
                 _value = value;
                 NotifySignalUpdate();
+                
+                if(modified)
+                    _onValueChanged?.Invoke(_value);
             }
         }
 
@@ -185,6 +192,17 @@ namespace Signals
         {
             _value = value;
             _dependents = dependent;
+        }
+        
+        public void Subscribe(Action<T> valueChanged)
+        {
+            _onValueChanged -= valueChanged;
+            _onValueChanged += valueChanged;
+        }
+        
+        public void Unsubscribe(Action<T> valueChanged)
+        {
+            _onValueChanged -= valueChanged;
         }
 
         protected override sealed void OnNotifySignalUpdate()
