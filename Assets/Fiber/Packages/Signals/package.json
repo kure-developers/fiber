@@ -1,0 +1,17 @@
+{
+    "name": "com.unity-atoms.fiber.signal",
+    "displayName": "Fiber: Signal",
+    "version": "0.0.1",
+    "repository": {
+      "type": "git",
+      "url": "git+https://github.com/unity-atoms/fiber.git"
+    },
+    "unity": "2021.2",
+    "description": "A declarative library for creating games in Unity",
+    "keywords": [
+      "declarative",
+      "unity"
+    ],
+    "category": "Unity"
+  }
+  
