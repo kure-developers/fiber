@@ -169,7 +169,7 @@ namespace Signals
     [Serializable]
     public class Signal<T> : BaseSignal<T>
     {
-        private event Action<T> _onValueChanged;
+        private event Action<T, T> _onValueChanged;
     
         [SerializeField]
         private T _value;
@@ -178,13 +178,14 @@ namespace Signals
             get => _value;
             set
             {
-                bool modified = !_value.Equals(value);
+                T previousValue = _value;
+                bool modified = !previousValue.Equals(value);
 
                 _value = value;
                 NotifySignalUpdate();
                 
                 if(modified)
-                    _onValueChanged?.Invoke(_value);
+                    _onValueChanged?.Invoke(previousValue, _value);
             }
         }
 
@@ -194,13 +195,13 @@ namespace Signals
             _dependents = dependent;
         }
         
-        public void Subscribe(Action<T> valueChanged)
+        public void Subscribe(Action<T, T> valueChanged)
         {
             _onValueChanged -= valueChanged;
             _onValueChanged += valueChanged;
         }
         
-        public void Unsubscribe(Action<T> valueChanged)
+        public void Unsubscribe(Action<T, T> valueChanged)
         {
             _onValueChanged -= valueChanged;
         }
