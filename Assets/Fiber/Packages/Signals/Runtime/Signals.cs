@@ -179,7 +179,7 @@ namespace Signals
             set
             {
                 T previousValue = _value;
-                bool modified = !previousValue.Equals(value);
+                bool modified = !Equals(previousValue, value);
 
                 _value = value;
                 NotifySignalUpdate();
